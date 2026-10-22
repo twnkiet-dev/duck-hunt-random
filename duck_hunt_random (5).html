@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ae0904">
+<title>Duck Hunt Random — 3 hàng vịt</title>
+<style>
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden}body{font-family:Arial,Helvetica,sans-serif;background:#1b1108;user-select:none;-webkit-user-select:none}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:4px solid #ffcf00;outline-offset:3px}.stage{position:absolute;width:1328px;height:746px;left:50%;top:50%;transform-origin:top left;overflow:hidden;background:#bbecf2;box-shadow:0 0 40px #0008}#view{width:1328px;height:746px;display:block}#toolbar{position:absolute;top:0;left:0;display:flex;height:62px;z-index:5}.tool{height:62px;width:63px;background:#050505;border:0;border-right:3px solid #bdbdbd;color:#fff;display:flex;justify-content:center;align-items:center;font-size:45px;line-height:1;padding:0;filter:drop-shadow(0 1px 1px #111)}.tool:hover{background:#252525}.tool svg{width:46px;height:46px;fill:#fff;stroke:#fff;stroke-linecap:round;stroke-linejoin:round}.tool.sound svg{width:42px;height:42px}.tool.trophy svg{width:43px;height:43px}.tool .muted-line{display:none}.tool.is-muted .muted-line{display:block}.brand{position:absolute;right:3px;top:8px;z-index:6;display:flex;align-items:center;font-size:16px;font-weight:bold;letter-spacing:-.5px;color:#fff;text-shadow:-1px -1px 0 #111,1px -1px 0 #111,-1px 1px 0 #111,1px 1px 0 #111,2px 2px 1px #333;pointer-events:none}.brand i{font-style:normal;font-size:25px;color:#03de52;text-shadow:-1px -1px 0 #000,1px 1px 0 #000}.brand .down{color:#ff2929;margin:0 -1px}.counter{position:absolute;left:2px;top:67px;z-index:4;font-size:20px;color:#030303;background:transparent;cursor:pointer;line-height:24px}.counter:hover{text-decoration:underline}.tap{position:absolute;z-index:8;left:50%;bottom:9px;transform:translateX(-50%);border:0;background:#ffffffdf;border-radius:15px;padding:1px 15px 3px;font-size:34px;line-height:42px;color:#080808;box-shadow:0 1px 5px #0008;white-space:nowrap;transition:background .12s,transform .12s}.tap:hover{background:white;transform:translateX(-50%) scale(1.025)}.tap[hidden],.result[hidden],.overlay[hidden],.toast[hidden]{display:none!important}.result{position:absolute;inset:0;z-index:14;background:#000c}.result-box{position:absolute;left:365px;top:118px;width:634px;height:483px;background:#fff;border:7px solid #000;display:grid;place-items:center}.result-number{font-family:Arial,sans-serif;font-weight:400;color:#000;line-height:1;letter-spacing:-7px;max-width:90%;white-space:nowrap}.corner{position:absolute;width:120px;height:90px;pointer-events:none}.corner svg{width:120px;height:90px;filter:drop-shadow(1px 1px 0 #000)}.corner.tl{left:294px;top:90px}.corner.tr{right:275px;top:90px;transform:scaleX(-1)}.corner.bl{left:283px;top:531px}.corner.br{right:265px;top:531px;transform:scaleX(-1)}.result-controls{position:absolute;right:17px;bottom:15px;width:215px;height:137px;background:#fff;border:5px solid #020202;border-radius:27px;padding:6px 5px 5px;box-shadow:0 1px 6px #0008}.remove-label{display:flex;align-items:center;gap:8px;font-size:19px;line-height:31px;white-space:nowrap;color:#111;cursor:pointer}.remove-label input{appearance:none;display:block;flex-shrink:0;margin:0;width:41px;height:41px;border:4px solid black;border-radius:50%;background:#fff;position:relative;cursor:pointer}.remove-label input:checked::after{content:'✔';position:absolute;left:4px;top:-6px;font-weight:bold;color:#0ac63a;font-size:36px;line-height:36px}.separator{height:4px;background:#eee;border-radius:5px;margin:6px 0 8px}.continue{height:61px;width:100%;border:4px solid #000;border-radius:16px;color:#fff;font-size:28px;background:#00ce32;box-shadow:inset 0 2px 0 #70fc84}.continue:hover{background:#02eb43}.overlay{position:absolute;inset:0;z-index:22;background:#000b;display:grid;place-items:center}.panel{background:#fff;max-width:590px;width:calc(100% - 60px);border:7px solid #050505;border-radius:19px;padding:26px 30px 24px;box-shadow:0 15px 0 #0006;font-size:21px;color:#111;max-height:90%;overflow-y:auto}.panel h2{font-size:35px;margin:0 0 8px;text-align:center}.panel p{font-size:18px;margin:7px 0 19px;text-align:center;line-height:1.4}.panel label{display:block;font-weight:700;margin:16px 0 8px}.panel input[type=number]{width:100%;height:64px;border:3px solid #333;border-radius:12px;font-size:33px;text-align:center;padding:5px 12px;background:#f7faff}.panel .range{width:100%;accent-color:#10b844}.sample-button{display:block;width:100%;margin-top:9px;padding:10px;border:2px solid #222;border-radius:11px;background:#ffed97;font-size:19px;font-weight:700;color:#1b1108}.sample-button:hover{background:#ffdd54}.panel .small{font-size:15px;color:#444;text-align:left;line-height:1.45}.actions{display:flex;gap:10px;margin-top:21px}.actions button{flex:1;min-height:57px;border:3px solid #111;border-radius:12px;font-size:19px;font-weight:bold;background:#f1f1f1;color:#111}.actions .green{background:#00d63a;color:white;font-size:22px}.history-list{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;max-height:230px;overflow:auto;padding:3px}.history-list span{min-width:55px;text-align:center;padding:8px;border:2px solid #222;border-radius:8px;background:#fff7cf;font-size:22px}.toast{position:absolute;left:50%;top:98px;transform:translateX(-50%);background:#fff;border:3px solid #000;border-radius:12px;padding:10px 18px;font-size:20px;z-index:13;white-space:nowrap;pointer-events:none}.landscape-hint{display:none}@media(orientation:portrait) and (max-width:700px){.landscape-hint{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);z-index:25;color:#fff;background:#000a;border-radius:20px;font-size:12px;padding:6px 10px;white-space:nowrap;pointer-events:none}}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+ <canvas id="view" width="1328" height="746" aria-label="Sân khấu có 3 hàng vịt chạy qua lại, mỗi con vịt mang một con số"></canvas>
+ <div id="toolbar">
+  <button id="settingsBtn" class="tool" title="Cài đặt số lớn nhất" aria-label="Cài đặt"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M19 3h10l1.5 7.1c1.1.4 2.2.9 3.3 1.6l6.2-3.3 6.9 7.1-3.7 6.1c.5 1.1.8 2.3.9 3.6l7 2v9l-7 1.7a18 18 0 0 1-1.5 3.2l3.4 6.2-7.1 6.9-6.1-3.8a19 19 0 0 1-3.5 1.1L28 58h-9l-1.7-7.1a18 18 0 0 1-3.1-1.5l-6.3 3.5L1 45.7l3.7-6.1A19 19 0 0 1 3.5 36l-7-1.7v-9l7.1-1.8a18 18 0 0 1 1.5-3.3l-3.4-6.1L9 7.2l6.1 3.6c1.1-.5 2.2-.9 3.3-1.1z" transform="translate(7 4) scale(.7)"/><circle cx="24" cy="24" r="9" fill="#050505" stroke="none"/></svg></button>
+  <button id="soundBtn" class="tool sound" title="Bật/tắt nhạc nền và hiệu ứng" aria-label="Bật tắt nhạc nền và hiệu ứng" aria-pressed="true"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M4 18h9l11-10v32L13 30H4z"/><path fill="none" stroke-width="3" d="M29 16q11 8 0 17M34 10q18 14 0 29"/><path class="muted-line" d="M4 4L44 44" fill="none" stroke="#f33" stroke-width="5"/></svg></button>
+  <button id="historyBtn" class="tool trophy" title="Lịch sử kết quả" aria-label="Lịch sử kết quả"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 7h20v8h9v3c0 9-6 15-14 16-.5 1-1 1.5-2 2v5h8v4H13v-4h8v-5c-1-.5-1.5-1-2-2C11 33 5 27 5 18v-3h9zm-5 12c0 5 2.5 8 6 10-1-3-1-7-1-10zm30 0h-5c0 3 0 7-1 10 3.5-2 6-5 6-10"/></svg></button>
+ </div>
+ <div class="brand"><i>⬆</i><i class="down">⬇</i>Online-Stopwatch.com</div>
+ <div class="counter" id="counter" title="Nhấn để thay đổi số">Numbers in Draw: <span id="poolSize">6</span></div>
+ <button class="tap" id="revealBtn">Tap to Reveal!</button>
+ <div class="toast" id="toast" hidden></div>
+ <div class="result" id="result" hidden>
+  <div class="result-box"><span class="result-number" id="resultValue">2</span></div>
+  <div class="corner tl"><svg viewBox="0 0 120 90"><path d="M24 26Q0 37 12 60Q24 80 67 77Q93 72 95 49Q105 52 116 41Q120 36 114 35Q105 40 94 31Q91 14 75 10Q50 1 42 23Q40 34 24 26Z" fill="#ffff00" stroke="#000" stroke-width="4"/><ellipse cx="75" cy="23" rx="7" ry="9" fill="#fff" stroke="#000" stroke-width="3"/><circle cx="77" cy="21" r="3.5"/><path d="M72 32L100 39L73 44Z" fill="#ff9200" stroke="#000" stroke-width="3"/></svg></div>
+  <div class="corner tr"><svg viewBox="0 0 120 90"><path d="M24 26Q0 37 12 60Q24 80 67 77Q93 72 95 49Q105 52 116 41Q120 36 114 35Q105 40 94 31Q91 14 75 10Q50 1 42 23Q40 34 24 26Z" fill="#ffff00" stroke="#000" stroke-width="4"/><ellipse cx="75" cy="23" rx="7" ry="9" fill="#fff" stroke="#000" stroke-width="3"/><circle cx="77" cy="21" r="3.5"/><path d="M72 32L100 39L73 44Z" fill="#ff9200" stroke="#000" stroke-width="3"/></svg></div>
+  <div class="corner bl"><svg viewBox="0 0 120 90"><path d="M24 26Q0 37 12 60Q24 80 67 77Q93 72 95 49Q105 52 116 41Q120 36 114 35Q105 40 94 31Q91 14 75 10Q50 1 42 23Q40 34 24 26Z" fill="#ffff00" stroke="#000" stroke-width="4"/><ellipse cx="75" cy="23" rx="7" ry="9" fill="#fff" stroke="#000" stroke-width="3"/><circle cx="77" cy="21" r="3.5"/><path d="M72 32L100 39L73 44Z" fill="#ff9200" stroke="#000" stroke-width="3"/></svg></div>
+  <div class="corner br"><svg viewBox="0 0 120 90"><path d="M24 26Q0 37 12 60Q24 80 67 77Q93 72 95 49Q105 52 116 41Q120 36 114 35Q105 40 94 31Q91 14 75 10Q50 1 42 23Q40 34 24 26Z" fill="#ffff00" stroke="#000" stroke-width="4"/><ellipse cx="75" cy="23" rx="7" ry="9" fill="#fff" stroke="#000" stroke-width="3"/><circle cx="77" cy="21" r="3.5"/><path d="M72 32L100 39L73 44Z" fill="#ff9200" stroke="#000" stroke-width="3"/></svg></div>
+  <div class="result-controls"><label class="remove-label"><input type="checkbox" id="removeNumber" checked><span>Remove Number</span></label><div class="separator"></div><button id="continueBtn" class="continue">Continue!</button></div>
+ </div>
+ <div class="overlay" id="settingsOverlay" hidden>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><h2 id="settingsTitle">⚙️ Cài đặt Duck Hunt</h2><p>Nhập số lớn nhất để random từ <b>1</b> đến số này.</p><label for="maxNumber">Số lớn nhất (1 → N)</label><input type="number" id="maxNumber" min="1" max="1000000" step="1" value="6" inputmode="numeric"><label for="speed">Tốc độ vịt: <span id="speedLabel">Bình thường</span></label><input type="range" id="speed" class="range" min="1" max="5" value="3"><label for="musicVolume">🎵 Âm lượng nhạc nền: <span id="musicVolumeLabel">45%</span></label><input type="range" id="musicVolume" class="range" min="0" max="100" step="5" value="45"><label for="effectsVolume">🔫 Âm lượng hiệu ứng: <span id="effectsVolumeLabel">75%</span></label><input type="range" id="effectsVolume" class="range" min="0" max="100" step="5" value="75"><label for="duckVolume">🦆 Âm lượng tiếng vịt: <span id="duckVolumeLabel">160%</span></label><input type="range" id="duckVolume" class="range" min="50" max="200" step="10" value="160"><button type="button" id="previewDuck" class="sample-button">🔊 Nghe thử tiếng vịt</button><p class="small">Vịt sẽ chạy liên tục trên 3 hàng. Khi bạn bấm <b>Tap to Reveal!</b>, đèn ngắm sẽ tự quét và chọn ngẫu nhiên một con vịt. Chọn <b>Remove Number</b> để số đã rút không xuất hiện ở lượt sau.</p><div class="actions"><button id="cancelSettings">Đóng</button><button class="green" id="saveSettings">Lưu & chơi</button></div></div>
+ </div>
+ <div class="overlay" id="historyOverlay" hidden><div class="panel" role="dialog" aria-modal="true"><h2>🏆 Lịch sử chọn số</h2><p id="historyInfo">Chưa có lượt quay nào.</p><div class="history-list" id="historyList"></div><div class="actions"><button id="closeHistory" class="green">Tiếp tục chơi</button></div></div></div>
+ <div class="overlay" id="endOverlay" hidden><div class="panel" role="dialog" aria-modal="true"><h2>🎉 Đã rút hết số!</h2><p>Toàn bộ các số trong khoảng đã được chọn. Bắt đầu vòng mới với cùng giới hạn.</p><div class="actions"><button class="green" id="restartBtn">Chơi lại từ đầu</button><button id="endSettingsBtn">Đổi số</button></div></div></div>
+</div>
+<div class="landscape-hint">📱 Xoay ngang điện thoại để chơi dễ hơn</div>
+<script>
+(()=>{'use strict';
+const W=1328,H=746,canvas=document.querySelector('#view'),ctx=canvas.getContext('2d'),stage=document.querySelector('#stage');
+const $=id=>document.getElementById(id);
+const state={max:6,removed:new Set(),history:[],speed:3,sound:true,musicVolume:45,effectsVolume:75,duckVolume:160,ducks:[],phase:'idle',scanStart:0,scanEnd:0,shotTarget:null,roundValue:null,roundId:0,sweep:0,lastTime:0,glitter:[],settingsWasOpen:false};
+const rowYs=[201,402,604];
+let audioCtx=null,musicBus=null,effectsBus=null,duckBus=null,duckCompressor=null,noiseBuffer=null,musicTimer=null,musicStep=0,nextMusicTime=0;
+let audioEffectsPlayed={draw:0,shot:0,duck:0,reveal:0};
+const r32=()=>{if(globalThis.crypto?.getRandomValues){let a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]}return Math.floor(Math.random()*4294967296)};
+function randInt(max){if(max<=1)return 0;const count=4294967296,limit=Math.floor(count/max)*max;let v;do{v=r32()}while(v>=limit);return v%max}
+function allowedNumber(){if(state.removed.size>=state.max)return null;let n;for(let k=0;k<50;k++){n=1+randInt(state.max);if(!state.removed.has(n))return n}let remaining=state.max-state.removed.size,idx=randInt(remaining);for(let i=1;i<=state.max;i++){if(!state.removed.has(i)&&idx--===0)return i}return 1}
+function updateCount(){$('poolSize').textContent=(state.max-state.removed.size).toLocaleString('en-US')}
+function fitStage(){
+ const viewportWidth=document.documentElement.clientWidth||window.innerWidth;
+ const viewportHeight=window.innerHeight;
+ const scale=Math.min(viewportWidth/W,viewportHeight/H);
+ // Place the scaled canvas itself in the middle: translating BEFORE scaling offsets it.
+ stage.style.left=`${(viewportWidth-W*scale)/2}px`;
+ stage.style.top=`${(viewportHeight-H*scale)/2}px`;
+ stage.style.transform=`scale(${scale})`;
+}
+window.addEventListener('resize',fitStage);fitStage();
+// Everything is synthesized with Web Audio; this HTML never fetches audio files.
+// Mobile browsers require a real user gesture before the first sound.
+const AudioEngine=window.AudioContext||window.webkitAudioContext;
+function activeAudio(){return !!(state.sound&&audioCtx&&audioCtx.state==='running')}
+function createAudio(){
+ if(!AudioEngine||audioCtx)return;
+ try{
+  audioCtx=new AudioEngine();
+  musicBus=audioCtx.createGain();effectsBus=audioCtx.createGain();
+  // The duck gets its own boosted, limited audio path; gunfire stays unchanged.
+  duckBus=audioCtx.createGain();duckCompressor=audioCtx.createDynamicsCompressor();
+  duckCompressor.threshold.value=-15;duckCompressor.knee.value=12;
+  duckCompressor.ratio.value=3;duckCompressor.attack.value=.004;duckCompressor.release.value=.08;
+  duckBus.connect(duckCompressor);duckCompressor.connect(effectsBus);
+  musicBus.connect(audioCtx.destination);effectsBus.connect(audioCtx.destination);
+  // Pre-generate a little white noise for bolts, gunfire and gentle percussion.
+  noiseBuffer=audioCtx.createBuffer(1,audioCtx.sampleRate,audioCtx.sampleRate);
+  const samples=noiseBuffer.getChannelData(0);
+  for(let i=0;i<samples.length;i++)samples[i]=Math.random()*2-1;
+  refreshVolumes();
+ }catch(err){audioCtx=null}
+}
+function refreshVolumes(){
+ if(!audioCtx)return;
+ const now=audioCtx.currentTime;
+ // Cancel previously queued music restoration if the listener mutes mid-shot.
+ musicBus.gain.cancelScheduledValues(now);
+ effectsBus.gain.cancelScheduledValues(now);
+ musicBus.gain.setTargetAtTime(state.sound?state.musicVolume/100:0,now,.025);
+ effectsBus.gain.setTargetAtTime(state.sound?state.effectsVolume/100:0,now,.025);
+ duckBus.gain.setTargetAtTime(state.duckVolume/100,now,.03);
+}
+function startAudio(){
+ if(!state.sound)return;
+ createAudio();if(!audioCtx)return;
+ if(audioCtx.state!=='running')audioCtx.resume().catch(()=>{});
+ if(musicTimer===null){
+  musicStep=0;nextMusicTime=audioCtx.currentTime+.12;
+  musicTimer=setInterval(scheduleMusic,75);
+  scheduleMusic();
+ }
+}
+function toggleSound(){
+ state.sound=!state.sound;
+ $('soundBtn').classList.toggle('is-muted',!state.sound);
+ $('soundBtn').setAttribute('aria-pressed',String(state.sound));
+ $('soundBtn').title=state.sound?'Tắt âm thanh':'Bật âm thanh';
+ if(!state.sound){
+  if(musicTimer!==null){clearInterval(musicTimer);musicTimer=null}
+  refreshVolumes();
+ }else{startAudio();refreshVolumes();playUiClick()}
+}
+function osc(bus,type,freq,start,length,volume,finalFreq=freq){
+ if(!audioCtx)return;
+ const startAt=Math.max(audioCtx.currentTime,start);
+ const stopAt=startAt+length;
+ const source=audioCtx.createOscillator(),gain=audioCtx.createGain();
+ source.type=type;
+ source.frequency.setValueAtTime(Math.max(25,freq),startAt);
+ if(finalFreq!==freq)source.frequency.exponentialRampToValueAtTime(Math.max(25,finalFreq),stopAt);
+ gain.gain.setValueAtTime(.0001,startAt);
+ gain.gain.exponentialRampToValueAtTime(Math.max(.0002,volume),startAt+Math.min(.012,length*.15));
+ gain.gain.exponentialRampToValueAtTime(.0001,stopAt);
+ source.connect(gain);gain.connect(bus);
+ source.start(startAt);source.stop(stopAt+.02);
+}
+function noise(bus,start,length,volume,filterType='lowpass',cutoff=2200){
+ if(!audioCtx||!noiseBuffer)return;
+ const at=Math.max(audioCtx.currentTime,start),src=audioCtx.createBufferSource(),filter=audioCtx.createBiquadFilter(),gain=audioCtx.createGain();
+ src.buffer=noiseBuffer;filter.type=filterType;filter.frequency.setValueAtTime(cutoff,at);
+ gain.gain.setValueAtTime(.0001,at);
+ gain.gain.exponentialRampToValueAtTime(Math.max(.0002,volume),at+.006);
+ gain.gain.exponentialRampToValueAtTime(.0001,at+length);
+ src.connect(filter);filter.connect(gain);gain.connect(bus);
+ src.start(at);src.stop(at+length+.02);
+}
+const noteFreq=midi=>440*Math.pow(2,(midi-69)/12);
+// Four original little 8-bit melody phrases (16 sixteenth notes each).
+const melody=[
+ 76,0,79,0,81,0,79,0,76,0,74,0,72,0,74,0,
+ 76,0,79,0,84,0,81,0,79,0,76,0,74,0,76,0,
+ 81,0,84,0,88,0,84,0,81,0,79,0,76,0,79,0,
+ 79,0,83,0,86,0,83,0,79,0,76,0,74,0,72,0
+];
+const bassRoots=[48,53,45,43];
+const chordNotes=[[60,64,67],[65,69,72],[57,60,64],[55,59,62]];
+const STEP_SEC=60/116/4;
+function musicNote(time,step){
+ if(!audioCtx||!state.sound||state.musicVolume===0)return;
+ const pos=step%64,beat=pos%16,bar=Math.floor(pos/16);
+ const n=melody[pos];
+ if(n)osc(musicBus,'triangle',noteFreq(n),time,STEP_SEC*1.65,.042);
+ if(beat%4===0){
+  osc(musicBus,'triangle',noteFreq(bassRoots[bar]),time,STEP_SEC*3.1,.06);
+  // Light arcade kick (not a military/dramatic track).
+  osc(musicBus,'sine',110,time,.085,.018,58);
+ }
+ if(beat%4===2){
+  const chord=chordNotes[bar],n2=chord[(beat/4|0)%3]+12;
+  osc(musicBus,'sine',noteFreq(n2),time,STEP_SEC*1.4,.018);
+ }
+ if(beat%2===1)noise(musicBus,time,.034,.0045,'highpass',5500);
+}
+function scheduleMusic(){
+ if(!state.sound||!audioCtx||musicTimer===null)return;
+ if(audioCtx.state!=='running')return;
+ if(nextMusicTime<audioCtx.currentTime-.2)nextMusicTime=audioCtx.currentTime+.06;
+ while(nextMusicTime<audioCtx.currentTime+.29){
+  musicNote(nextMusicTime,musicStep++);
+  nextMusicTime+=STEP_SEC;
+ }
+}
+// Mechanical slide: shhk - tick-clack, played when the scope appears.
+function playDrawGun(){
+ if(!activeAudio())return;
+ audioEffectsPlayed.draw++;
+ const t=audioCtx.currentTime+.015;
+ noise(effectsBus,t,.19,.16,'bandpass',1500);
+ osc(effectsBus,'sawtooth',470,t,.16,.035,130);
+ noise(effectsBus,t+.19,.035,.34,'highpass',2400);
+ osc(effectsBus,'square',840,t+.19,.045,.045,450);
+ noise(effectsBus,t+.31,.038,.37,'highpass',1700);
+ osc(effectsBus,'triangle',690,t+.31,.075,.05,310);
+}
+// Loud, crisp, but short arcade gunshot: muzzle crack + low thump + casing ring.
+function playGunshot(){
+ if(!activeAudio())return;
+ audioEffectsPlayed.shot++;
+ const t=audioCtx.currentTime+.008;
+ // Reduce melody briefly so the gunshot sounds clear.
+ musicBus.gain.cancelScheduledValues(t);
+ musicBus.gain.setTargetAtTime(state.musicVolume/600,t,.02);
+ // Hold the backing music down until BOTH quacks finish (not just the gunshot).
+ musicBus.gain.setTargetAtTime(state.musicVolume/100,t+1.03,.16);
+ noise(effectsBus,t,.21,.63,'lowpass',3000);
+ noise(effectsBus,t,.075,.42,'highpass',1900);
+ osc(effectsBus,'triangle',210,t,.28,.33,47);
+ osc(effectsBus,'sawtooth',122,t,.09,.14,58);
+ noise(effectsBus,t+.17,.23,.08,'lowpass',1100);
+ osc(effectsBus,'sine',1700,t+.24,.17,.036,1100);
+}
+// Two deliberately loud, nasal, multi-formant cartoon quacks. They start after
+// the loudest gunshot transient, so they do not get masked by gunfire.
+function playDuckQuack(){
+ if(!activeAudio())return;
+ audioEffectsPlayed.duck++;
+ const first=audioCtx.currentTime+.26;
+ function burst(at,length,pitch,intensity){
+  const voice=audioCtx.createOscillator();
+  const mod=audioCtx.createOscillator();
+  const vibrato=audioCtx.createGain();
+  const nasal=audioCtx.createBiquadFilter(),nasalGain=audioCtx.createGain();
+  const upper=audioCtx.createBiquadFilter(),upperGain=audioCtx.createGain();
+  const envelope=audioCtx.createGain();
+
+  // Pitch bends DOWN in a raspy "QUAA-ACK", instead of a simple electronic beep.
+  voice.type='sawtooth';
+  voice.frequency.setValueAtTime(pitch*1.42,at);
+  voice.frequency.exponentialRampToValueAtTime(pitch,at+length*.30);
+  voice.frequency.exponentialRampToValueAtTime(pitch*.64,at+length);
+  mod.type='sine';mod.frequency.value=27;
+  vibrato.gain.value=pitch*.038;
+  mod.connect(vibrato);vibrato.connect(voice.frequency);
+
+  // Lower throat and upper beak resonances make the call recognizable as a duck.
+  nasal.type='bandpass';nasal.frequency.value=760;nasal.Q.value=.8;
+  upper.type='bandpass';upper.frequency.value=1770;upper.Q.value=1.15;
+  nasalGain.gain.value=1.0;upperGain.gain.value=.57;
+  voice.connect(nasal);nasal.connect(nasalGain);nasalGain.connect(envelope);
+  voice.connect(upper);upper.connect(upperGain);upperGain.connect(envelope);
+  envelope.connect(duckBus);
+
+  // Two syllabic energy peaks, with a crisp but not painful attack.
+  const peak=.95*intensity;
+  envelope.gain.setValueAtTime(.0001,at);
+  envelope.gain.linearRampToValueAtTime(peak,at+.022);
+  envelope.gain.linearRampToValueAtTime(peak*.63,at+length*.35);
+  envelope.gain.linearRampToValueAtTime(peak*.92,at+length*.55);
+  envelope.gain.exponentialRampToValueAtTime(.0001,at+length);
+  voice.start(at);voice.stop(at+length+.012);
+  mod.start(at);mod.stop(at+length+.012);
+
+  // Rough airy consonant at the beginning and tail of each quack.
+  noise(duckBus,at+.006,length*.65,.24*intensity,'bandpass',1250);
+  noise(duckBus,at+length*.70,length*.24,.085*intensity,'highpass',2050);
+ }
+ burst(first,.30,355,1);
+ burst(first+.38,.27,315,.93);
+}
+function playResultJingle(){
+ if(!activeAudio())return;
+ audioEffectsPlayed.reveal++;
+ const t=audioCtx.currentTime;
+ [76,79,84,88].forEach((n,i)=>{
+  osc(effectsBus,'triangle',noteFreq(n),t+i*.105,.19,.07);
+  osc(effectsBus,'sine',noteFreq(n)*2,t+i*.105,.1,.016);
+ });
+}
+function playUiClick(){
+ if(!activeAudio())return;
+ const t=audioCtx.currentTime;
+ osc(effectsBus,'sine',640,t,.055,.055,440);
+}
+function playAimTick(){
+ if(!activeAudio())return;
+ const t=audioCtx.currentTime;
+ osc(effectsBus,'triangle',880,t,.05,.022,540);
+}
+// Begin after the first click/touch/keyboard action; no autoplay restrictions.
+document.addEventListener('pointerdown',startAudio,{passive:true});
+document.addEventListener('keydown',startAudio);
+function generateDucks(){state.ducks=[];for(let row=0;row<3;row++){for(let col=0;col<5;col++){const centers=[69,469,869,1269,1669],off=[20,-15,8][row];state.ducks.push({id:row*5+col,row,col,x:centers[col]+off+(row===1?-180:0),num:allowedNumber()??1,v:(row===1?-1:1)*(24+randInt(17)),scale:1,bob:randInt(6000)/1000})}}}
+function rerollLabels(){for(const d of state.ducks)d.num=allowedNumber()??1}
+function pathMove(points,close=true){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));if(close)ctx.closePath()}
+function background(){
+ ctx.fillStyle='#b6ebf7';ctx.fillRect(0,0,W,H);
+ // Radial pastel rays, like the game in the supplied screenshots.
+ for(let i=0;i<20;i++){const a=i*Math.PI*2/20-.92,b=(i+1)*Math.PI*2/20-.92;ctx.beginPath();ctx.moveTo(665,628);ctx.lineTo(665+1800*Math.cos(a),628+1800*Math.sin(a));ctx.lineTo(665+1800*Math.cos(b),628+1800*Math.sin(b));ctx.closePath();ctx.fillStyle=i%2?'rgba(205,216,137,.25)':'rgba(255,255,219,.17)';ctx.fill()}
+ // hills around bottom
+ ctx.beginPath();ctx.moveTo(0,641);ctx.bezierCurveTo(90,570,188,601,244,638);ctx.bezierCurveTo(325,602,425,610,487,627);ctx.bezierCurveTo(557,588,630,615,689,627);ctx.bezierCurveTo(774,605,836,593,894,627);ctx.bezierCurveTo(1018,605,1103,592,1167,627);ctx.bezierCurveTo(1220,605,1272,597,1328,615);ctx.lineTo(W,713);ctx.lineTo(0,713);ctx.closePath();ctx.fillStyle='#4c9414';ctx.fill();ctx.lineWidth=4;ctx.strokeStyle='#203c00';ctx.stroke();
+ // swaying sea
+ ctx.beginPath();ctx.moveTo(0,677);const t=state.sweep;for(let x=0;x<=1340;x+=7){const y=675+14*Math.sin((x/240+t/7)*Math.PI*2);ctx.lineTo(x,y)}ctx.lineTo(W,702);ctx.lineTo(0,702);ctx.closePath();ctx.fillStyle='#04a2c8';ctx.fill();ctx.strokeStyle='#004362';ctx.lineWidth=5;ctx.stroke();
+ for(let i=0;i<25;i++){const x=(i*125+32)%W,y=680+11*Math.sin(i*7+t*.3);ctx.fillStyle=i%3?'#ffffff5a':'#9eebeb99';ctx.beginPath();ctx.arc(x,y,3+i%3,0,Math.PI*2);ctx.fill()}
+ // red-white striped stage bottom
+ for(let i=0;i<13;i++){ctx.fillStyle=i%2?'#fff':'#ed0303';ctx.fillRect(i*110,703,110,43)}
+ const bot=ctx.createLinearGradient(0,692,0,707);bot.addColorStop(0,'#111');bot.addColorStop(.4,'#ddd');bot.addColorStop(.7,'#555');bot.addColorStop(1,'#222');ctx.fillStyle=bot;ctx.fillRect(0,691,W,14);
+}
+function drawDuck(d){const x=d.x,y=rowYs[d.row]+Math.sin(state.sweep*1.8+d.bob)*3;ctx.save();ctx.translate(x,y); // flight in lanes, target is at 0,0
+ if(d.v<0){ctx.scale(-1,1)}
+ ctx.lineJoin='round';ctx.lineCap='round';
+ // yellow duck body and tail
+ ctx.fillStyle='#fffa08';ctx.strokeStyle='#050505';ctx.lineWidth=4.6;
+ ctx.beginPath();ctx.moveTo(-91,-54);ctx.bezierCurveTo(-103,-74,-89,-98,-60,-102);ctx.bezierCurveTo(-19,-109,-12,-82,-10,-56);ctx.bezierCurveTo(-7,-25,36,-21,64,-21);ctx.bezierCurveTo(92,-21,103,-46,103,-30);ctx.bezierCurveTo(110,26,78,77,21,83);ctx.bezierCurveTo(-34,90,-76,68,-88,39);ctx.bezierCurveTo(-95,18,-100,-24,-91,-54);ctx.closePath();ctx.fill();ctx.stroke();
+ // little wing, mostly obscured by target
+ ctx.beginPath();ctx.moveTo(-51,7);ctx.bezierCurveTo(-21,-23,23,-5,43,19);ctx.bezierCurveTo(24,63,-20,70,-51,40);ctx.closePath();ctx.fillStyle='#faf508';ctx.fill();ctx.stroke();
+ // eye
+ ctx.beginPath();ctx.ellipse(-62,-69,12,13,0,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.lineWidth=4;ctx.strokeStyle='#030303';ctx.stroke();ctx.beginPath();ctx.arc(-58,-72,5.7,0,Math.PI*2);ctx.fillStyle='#000';ctx.fill();
+ // duck bill faces left
+ ctx.beginPath();ctx.moveTo(-93,-70);ctx.quadraticCurveTo(-122,-66,-143,-58);ctx.quadraticCurveTo(-163,-51,-131,-44);ctx.quadraticCurveTo(-109,-38,-93,-47);ctx.quadraticCurveTo(-83,-57,-93,-70);ctx.closePath();ctx.fillStyle='#fb8e00';ctx.fill();ctx.lineWidth=4;ctx.strokeStyle='#070707';ctx.stroke();
+ // target white ring and colored center
+ ctx.beginPath();ctx.arc(0,0,70,0,2*Math.PI);ctx.fillStyle='#fff';ctx.fill();ctx.lineWidth=4.5;ctx.strokeStyle='#000';ctx.stroke();
+ ctx.beginPath();ctx.arc(0,0,56,0,2*Math.PI);ctx.fillStyle='#d7d9da';ctx.fill();
+ ctx.beginPath();ctx.arc(0,0,42,0,2*Math.PI);ctx.fillStyle='#b8e4f1';ctx.fill();
+ ctx.beginPath();ctx.arc(0,0,21,0,2*Math.PI);ctx.fillStyle='#ffadb3';ctx.fill();
+ ctx.save();if(d.v<0)ctx.scale(-1,1);const digits=String(d.num).length;ctx.fillStyle='#020202';ctx.font=`${digits>6?20:digits>4?26:digits>3?33:digits>2?39:49}px Arial`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(d.num,0,2,101);ctx.restore();ctx.restore()}
+function metalRail(y){const g=ctx.createLinearGradient(0,y-7,0,y+7);g.addColorStop(0,'#101010');g.addColorStop(.2,'#dedede');g.addColorStop(.43,'#888');g.addColorStop(.68,'#8c8c8c');g.addColorStop(1,'#0b0b0b');ctx.fillStyle=g;ctx.fillRect(22,y-7,1283,14);ctx.strokeStyle='#252525';ctx.lineWidth=2;ctx.strokeRect(22,y-7,1283,14)}
+function star(x,y,r=27){ctx.save();ctx.translate(x,y);ctx.beginPath();for(let i=0;i<10;i++){let a=i*Math.PI/5-Math.PI/2,R=i%2?r*.46:r;const xx=Math.cos(a)*R,yy=Math.sin(a)*R;i?ctx.lineTo(xx,yy):ctx.moveTo(xx,yy)}ctx.closePath();ctx.fillStyle='#ffe500';ctx.strokeStyle='#fbb600';ctx.lineWidth=2;ctx.fill();ctx.stroke();ctx.restore()}
+function curtains(){
+ // top golden border and theater arch
+ ctx.fillStyle='#dabb2d';ctx.fillRect(0,0,W,20);ctx.fillStyle='#4e2704';ctx.fillRect(0,20,W,5);
+ ctx.beginPath();ctx.moveTo(18,24);ctx.lineTo(1262,24);ctx.quadraticCurveTo(1296,25,1304,85);ctx.bezierCurveTo(1225,95,1170,42,1108,58);ctx.bezierCurveTo(970,88,875,62,807,59);ctx.bezierCurveTo(663,98,572,42,484,61);ctx.bezierCurveTo(328,100,235,51,180,61);ctx.bezierCurveTo(100,85,38,72,18,112);ctx.closePath();let g=ctx.createLinearGradient(0,28,0,108);g.addColorStop(0,'#5b0000');g.addColorStop(.25,'#f60908');g.addColorStop(.48,'#a90000');g.addColorStop(.76,'#e80000');g.addColorStop(1,'#640000');ctx.fillStyle=g;ctx.fill();ctx.strokeStyle='#6a0501';ctx.lineWidth=6;ctx.stroke();
+ for(let i=0;i<10;i++){const a=70+i*125;ctx.beginPath();ctx.moveTo(a,35);ctx.bezierCurveTo(a+20,78,a+58,83,a+90,69);ctx.strokeStyle=i%2?'#79010080':'#ff1d0c77';ctx.lineWidth=9;ctx.stroke()}
+ // left and right red curtains
+ for(let side=0;side<2;side++){ctx.save();if(side){ctx.translate(W,0);ctx.scale(-1,1)}
+ ctx.beginPath();ctx.moveTo(18,35);ctx.bezierCurveTo(60,44,91,73,94,130);ctx.bezierCurveTo(93,218,70,313,82,408);ctx.bezierCurveTo(94,503,94,647,63,695);ctx.lineTo(20,695);ctx.closePath();let f=ctx.createLinearGradient(0,0,110,0);f.addColorStop(0,'#620000');f.addColorStop(.22,'#f20d00');f.addColorStop(.45,'#9c0000');f.addColorStop(.63,'#f90000');f.addColorStop(.87,'#970000');f.addColorStop(1,'#430000');ctx.fillStyle=f;ctx.fill();ctx.strokeStyle='#7d0600';ctx.lineWidth=6;ctx.stroke();
+ for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(28+i*18,65);ctx.bezierCurveTo(34+i*14,230,29+i*21,480,40+i*17,669);ctx.strokeStyle=i%2?'#e90000aa':'#50000088';ctx.lineWidth=7;ctx.stroke()}
+ ctx.restore()}
+ // gold star decorations on side
+ [103,287,489,648].forEach(y=>{star(34,y,25);star(1299,y,25)});
+}
+function drawReticle(x,y,size=45){ctx.save();ctx.translate(x,y);ctx.strokeStyle='#f00';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-size*1.35,0);ctx.lineTo(-size*.17,0);ctx.moveTo(size*.17,0);ctx.lineTo(size*1.35,0);ctx.moveTo(0,-size*1.4);ctx.lineTo(0,-size*.2);ctx.moveTo(0,size*.2);ctx.lineTo(0,size*1.4);ctx.stroke();ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,4,0,Math.PI*2);ctx.stroke();ctx.restore()}
+// One shared point controls both the spotlight and the single red crosshair.
+// The slower sine waves provide a gentle scanning motion. Near the end, the
+// spotlight locks smoothly onto the number of the chosen, still-moving duck.
+const SCAN_DURATION_MS=5500;
+const LOCK_DURATION_MS=1700;
+function aimPoint(){
+ const duck=state.shotTarget;
+ return {x:duck.x,y:rowYs[duck.row]+Math.sin(state.sweep*1.8+duck.bob)*3};
+}
+function scanVisual(timestamp){
+ const elapsed=Math.max(0,timestamp-state.scanStart);
+ const t=elapsed/1000;
+ const lockStart=SCAN_DURATION_MS-LOCK_DURATION_MS;
+ const progress=Math.max(0,Math.min(1,(elapsed-lockStart)/LOCK_DURATION_MS));
+ // Ease out to lock on the target without an abrupt jump or shake.
+ const smooth=progress*progress*(3-2*progress);
+ const movingX=664+335*Math.sin(t*1.28-.6);
+ const movingY=363+132*Math.sin(t*.92+.35);
+ const target=aimPoint();
+ const focusX=movingX*(1-smooth)+target.x*smooth;
+ const focusY=movingY*(1-smooth)+target.y*smooth;
+ const radius=310;
+ ctx.save();
+ ctx.fillStyle='rgba(0,0,0,.76)';
+ ctx.beginPath();ctx.rect(0,0,W,H);
+ ctx.moveTo(focusX+radius,focusY);
+ ctx.arc(focusX,focusY,radius,0,Math.PI*2);
+ ctx.fill('evenodd');
+ const glass=ctx.createRadialGradient(focusX,focusY,0,focusX,focusY,radius);
+ glass.addColorStop(0,'#ffffff15');glass.addColorStop(.8,'#ffffff04');glass.addColorStop(1,'#00000004');
+ ctx.fillStyle=glass;ctx.beginPath();ctx.arc(focusX,focusY,radius,0,Math.PI*2);ctx.fill();
+ // Exactly ONE red crosshair, always at the spotlight's geometric center.
+ drawReticle(focusX,focusY,43);
+ ctx.restore();
+}
+function shotVisual(timestamp){
+ const elapsed=timestamp-state.scanEnd;
+ const target=aimPoint();
+ // Keep the aim in the middle of the illuminated circle even after the shot.
+ ctx.save();ctx.fillStyle='rgba(0,0,0,.76)';ctx.beginPath();ctx.rect(0,0,W,H);
+ ctx.moveTo(target.x+310,target.y);ctx.arc(target.x,target.y,310,0,Math.PI*2);
+ ctx.fill('evenodd');ctx.restore();
+ if(elapsed<130){ctx.fillStyle=`rgba(255,255,255,${Math.max(0,(130-elapsed)/130*.35)})`;ctx.fillRect(0,0,W,H)}
+ if(elapsed<550)drawReticle(target.x,target.y,54);
+}
+function draw(timestamp){let dt=Math.min(.05,Math.max(0,(timestamp-state.lastTime)/1000||0));state.lastTime=timestamp;state.sweep+=dt;const canMove=state.phase==='idle'||state.phase==='scan';
+ if(canMove){for(const d of state.ducks){const factor=[.35,.55,.82,1.15,1.55][state.speed-1];d.x+=d.v*dt*factor;if(d.v>0&&d.x>1505)d.x=-270;if(d.v<0&&d.x<-270)d.x=1505}}
+ background();
+ for(const d of state.ducks){if(d.x>-175&&d.x<1500)drawDuck(d)}
+ metalRail(281);metalRail(482);curtains();
+ if(state.phase==='scan')scanVisual(timestamp);
+ if(state.phase==='shot')shotVisual(timestamp);
+ requestAnimationFrame(draw)
+}
+function visibleDucks(){return state.ducks.filter(d=>d.x>330&&d.x<1030)}
+function pickDuck(){let pick=visibleDucks();if(!pick.length)pick=state.ducks;return pick[randInt(pick.length)]}
+function beginScan(){if(state.phase!=='idle'||!$('settingsOverlay').hidden||!$('historyOverlay').hidden||!$('endOverlay').hidden)return;if(state.removed.size>=state.max){$('endOverlay').hidden=false;return}state.shotTarget=pickDuck();state.roundValue=state.shotTarget.num;const token=++state.roundId;state.phase='scan';state.scanStart=performance.now();$('revealBtn').hidden=true;startAudio();playDrawGun();setTimeout(()=>{if(token===state.roundId&&state.phase==='scan')playAimTick()},2600);setTimeout(()=>{if(token!==state.roundId||state.phase!=='scan')return;state.phase='shot';state.scanEnd=performance.now();playGunshot();playDuckQuack();setTimeout(()=>{if(token===state.roundId)showResult()},1150)},SCAN_DURATION_MS)}
+function showResult(){if(state.phase!=='shot')return;state.phase='result';state.history.push(state.roundValue);$('resultValue').textContent=state.roundValue;const digits=String(state.roundValue).length;$('resultValue').style.fontSize=`${digits<3?246:digits===3?203:digits===4?164:digits===5?134:digits===6?109:91}px`;$('result').hidden=false;playResultJingle()}
+function continuePlay(){playUiClick();$('result').hidden=true;if($('removeNumber').checked&&state.roundValue!==null)state.removed.add(state.roundValue);updateCount();state.roundValue=null;state.shotTarget=null;state.phase='idle';rerollLabels();if(state.removed.size>=state.max){$('endOverlay').hidden=false}else{$('revealBtn').hidden=false}}
+function startOver(){state.roundId++;state.removed.clear();state.history=[];state.roundValue=null;state.shotTarget=null;state.phase='idle';generateDucks();updateCount();$('result').hidden=true;$('endOverlay').hidden=true;$('revealBtn').hidden=false}
+function showSettings(){$('maxNumber').value=state.max;$('speed').value=state.speed;$('musicVolume').value=state.musicVolume;$('effectsVolume').value=state.effectsVolume;$('duckVolume').value=state.duckVolume;updateAudioLabels();speedLabel();$('settingsOverlay').hidden=false;state.settingsWasOpen=true;setTimeout(()=>$('maxNumber').focus(),40)}
+function hideSettings(){$('settingsOverlay').hidden=true}
+function speedLabel(){$('speedLabel').textContent=['Rất chậm','Chậm','Bình thường','Nhanh','Rất nhanh'][Number($('speed').value)-1]}
+function updateAudioLabels(){$('musicVolumeLabel').textContent=state.musicVolume+'%';$('effectsVolumeLabel').textContent=state.effectsVolume+'%';$('duckVolumeLabel').textContent=state.duckVolume+'%'}
+function changeAudioVolumes(){state.musicVolume=Number($('musicVolume').value);state.effectsVolume=Number($('effectsVolume').value);state.duckVolume=Number($('duckVolume').value);updateAudioLabels();refreshVolumes()}
+function saveSettings(){const n=Number($('maxNumber').value);if(!Number.isSafeInteger(n)||n<1||n>1000000){alert('Vui lòng nhập số nguyên từ 1 đến 1.000.000.');$('maxNumber').focus();return}const changed=n!==state.max;state.max=n;state.speed=Number($('speed').value);hideSettings();if(changed)startOver();else{updateCount();if(state.phase==='idle')$('revealBtn').hidden=false}}
+function showHistory(){const list=$('historyList');list.replaceChildren();for(const n of state.history){const node=document.createElement('span');node.textContent=n;list.append(node)}$('historyInfo').textContent=state.history.length?`Đã chọn ${state.history.length} lượt, còn ${state.max-state.removed.size} số trong vòng quay.`:'Chưa có lượt quay nào.';$('historyOverlay').hidden=false}
+$('settingsBtn').onclick=showSettings;$('counter').onclick=showSettings;$('cancelSettings').onclick=hideSettings;$('saveSettings').onclick=saveSettings;$('speed').oninput=speedLabel;$('musicVolume').oninput=changeAudioVolumes;$('effectsVolume').oninput=changeAudioVolumes;$('duckVolume').oninput=changeAudioVolumes;$('previewDuck').onclick=()=>{startAudio();playDuckQuack()};$('maxNumber').addEventListener('keydown',e=>{if(e.key==='Enter')saveSettings()});$('soundBtn').onclick=toggleSound;$('historyBtn').onclick=showHistory;$('closeHistory').onclick=()=>$('historyOverlay').hidden=true;$('revealBtn').onclick=beginScan;$('continueBtn').onclick=continuePlay;$('restartBtn').onclick=startOver;$('endSettingsBtn').onclick=()=>{startOver();showSettings()};
+$('settingsOverlay').addEventListener('click',e=>{if(e.target===$('settingsOverlay'))hideSettings()});$('historyOverlay').addEventListener('click',e=>{if(e.target===$('historyOverlay'))$('historyOverlay').hidden=true});document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('settingsOverlay').hidden)hideSettings();if(!$('historyOverlay').hidden)$('historyOverlay').hidden=true}else if((e.key===' '||e.key==='Enter')&&document.activeElement===document.body){e.preventDefault();if(state.phase==='idle')beginScan();else if(state.phase==='result')continuePlay()}});
+window.duckGameDebug={get state(){return{phase:state.phase,max:state.max,remaining:state.max-state.removed.size,history:[...state.history],duckCount:state.ducks.length,number:state.roundValue,soundEnabled:state.sound,musicVolume:state.musicVolume,effectsVolume:state.effectsVolume,duckVolume:state.duckVolume,audioContextState:audioCtx?.state||'not-created',musicPlaying:musicTimer!==null,effectsPlayed:{...audioEffectsPlayed}}}};
+updateCount();generateDucks();requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>
